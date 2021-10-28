@@ -3,9 +3,18 @@ from random import randint
 from src.Board import Board
 from src.Player import Player
 
+# TODO Make minimum and maximum name length requirement
 
-# TODO
-# Make minimum and maximum name length requirement
+# TODO move this somewhere else
+# All possible inputs for the player while playing the game
+possibleInputs = [["a1", "a2", "a3"],
+                    ["b1", "b2", "b3"],
+                    ["c1", "c2", "c3"]]
+
+
+# How many turns each player has to do before the
+turnsBeforeSliding = 6
+turnCounter = 0
 
 print("Welcome to Italian Tic-Tac-Toe")
 
@@ -26,11 +35,13 @@ board = Board()
 gameIsPlaying = True
 
 
+# gives a random player a turn
 def randomizeTurnOrder():
-    rand = randint(0, 1)
+    rand = randint(0, len(players) - 1)
     players[rand].setHasTurn(True)
 
 
+# Gives the turn to the next player in the player list
 def giveTurnToNextPlayer():
     for i in range(0, len(players)):
         if players[i].getHasTurn():
@@ -42,11 +53,34 @@ def giveTurnToNextPlayer():
             break
 
 
+# Returns the player that currently has the turn
 def currentPlayer():
     for playerList in players:
         if playerList.getHasTurn():
             return playerList
 
+# checks if the input that is given is correct
+def isRealInput(input):
+
+    for i in range(0, len(possibleInputs)):
+        for n in range(0, len(possibleInputs[0])):
+
+            if input == possibleInputs[i][n]:
+                return True
+
+    return False
+
+# checks if the input that is given is correct
+def getInputIndex(input):
+
+    for i in range(0, len(possibleInputs)):
+        for n in range(0, len(possibleInputs[0])):
+
+            if input == possibleInputs[i][n]:
+                return [i, n]
+
+    # This should never happen, but is here for safety
+    return [0, 0]
 
 randomizeTurnOrder()
 
@@ -56,21 +90,55 @@ while gameIsPlaying:
 
     player = currentPlayer()
 
-    print(player.getName() + ", it's your turn!")
+    if turnCounter < turnsBeforeSliding:
 
-    board.drawBoard()
-    playerMove = input()
+        print(player.getName() + ", it's your turn!")
 
-    possibleInputs = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+        board.drawBoard()
+        playerMove = input()
 
-    for i in range(0, len(possibleInputs)):
-        if playerMove == possibleInputs[i]:
-            if board.isLegalMove(i):
-                moveMade = True
-                board.setBoardValues(player.getShape(), i)
 
+
+        # Places a shape on the location the user specified (if its available)
+
+        for i in range(0, len(possibleInputs)):
+            for n in range(0, len(possibleInputs[0])):
+                if playerMove == possibleInputs[i][n]:
+                    if isRealInput(playerMove):
+                        if board.isLegalMove(i, n):
+                            moveMade = True
+                            board.setBoardValues(player.getShape(), i, n)
+
+    else:
+        print(player.getName() + ", it's your turn!")
+        board.drawBoard()
+        movingShape = input("Which shape do you want to move? ")
+        movingLocation = input("Where do you want to move the shape? ")
+
+        # Check if inputs are valid
+        if isRealInput(movingShape) and isRealInput(movingLocation):
+            shapeIndex = getInputIndex(movingShape)
+            locationIndex = getInputIndex(movingLocation)
+            # Check if moving shape is the same as the players shape
+            if board.getBoardValues()[shapeIndex[0]][shapeIndex[1]] == player.getShape():
+                # Check if location is empty
+                if board.getBoardValues()[locationIndex[0]][locationIndex[1]] == " ":
+                    if board.checkIfNextToTile(shapeIndex, locationIndex):
+                        board.setBoardValues(" ", shapeIndex[0], shapeIndex[1])
+                        board.setBoardValues(player.getShape(), locationIndex[0], locationIndex[1])
+                        moveMade = True
+
+
+
+
+    if board.hasWon(player.getShape()):
+        gameIsPlaying = False
 
     if moveMade:
         giveTurnToNextPlayer()
+        turnCounter += 1
     else:
         print("The move that has been made was not legal, try again")
+
+board.drawBoard()
+print("weiner")
