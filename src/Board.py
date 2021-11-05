@@ -25,27 +25,31 @@ class Board:
 
     def hasWon(self, shape):
         for x in range(0, self.boardWidth):
-            if self.boardValues[0][x] == shape and self.boardValues[1][x] == shape and self.boardValues[2][x] == shape:
-                return True
+            for y in range(0, self.boardHeight - 2):
+                if self.boardValues[y][x] == shape and self.boardValues[y+1][x] == shape and self.boardValues[y+2][x] == shape:
+                    return True
 
-        for y in range(0, self.boardWidth):
-            if self.boardValues[y][0] == shape and self.boardValues[y][1] == shape and self.boardValues[y][2] == shape:
-                return True
+        for y in range(0, self.boardHeight):
+            for x in range(0, self.boardWidth - 2):
+                if self.boardValues[y][x] == shape and self.boardValues[y][x+1] == shape and self.boardValues[y][x+2] == shape:
+                    return True
 
-        if self.boardValues[0][0] == shape and self.boardValues[1][1] == shape and self.boardValues[2][2] == shape:
-            return True
-
-        if self.boardValues[0][2] == shape and self.boardValues[1][1] == shape and self.boardValues[2][0] == shape:
-            return True
+        for x in range(0, self.boardWidth - 2):
+            for y in range(0, self.boardHeight - 2):
+                if self.boardValues[x][y] == shape and self.boardValues[x+1][y+1] == shape and self.boardValues[x+2][y+2] == shape:
+                    return True
+                if self.boardValues[x][y+2] == shape and self.boardValues[x+1][y+1] == shape and self.boardValues[x+2][y] == shape:
+                    return True
 
         return False
 
     def checkIfNextToTile(self, tile1, tile2):
         distance1 = abs(tile1[0] - tile2[0])
         distance2 = abs(tile1[1] - tile2[1])
-        # TODO fix this awful code :(
-        if tile2[0] == 1 and tile2[1] == 1 or tile1[0] == 1 and tile1[1] == 1:
-            return True
+        tileList = [tile1, tile2]
+        for tile in tileList:
+            if 0 < tile[0] < self.boardWidth - 1 and 0 < tile[1] < self.boardHeight - 1:
+                return True
         if distance1 + distance2 <= 1:
             return True
         return False

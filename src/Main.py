@@ -33,6 +33,7 @@ print(f"Hello {players[0].getName()} and {players[1].getName()}")
 board = Board()
 
 gameIsPlaying = True
+gameLoop = True
 
 
 # gives a random player a turn
@@ -84,61 +85,63 @@ def getInputIndex(input):
 
 randomizeTurnOrder()
 
-while gameIsPlaying:
-    # Turns to true when a valid move has been made
-    moveMade = False
+while gameLoop:
+    while gameIsPlaying:
+        # Turns to true when a valid move has been made
+        moveMade = False
 
-    player = currentPlayer()
+        player = currentPlayer()
 
-    if turnCounter < turnsBeforeSliding:
+        if turnCounter < turnsBeforeSliding:
 
-        print(player.getName() + ", it's your turn!")
+            print(player.getName() + ", it's your turn!")
 
-        board.drawBoard()
-        playerMove = input()
+            board.drawBoard()
+            playerMove = input()
 
 
 
-        # Places a shape on the location the user specified (if its available)
+            # Places a shape on the location the user specified (if its available)
 
-        for i in range(0, len(possibleInputs)):
-            for n in range(0, len(possibleInputs[0])):
-                if playerMove == possibleInputs[i][n]:
-                    if isRealInput(playerMove):
-                        if board.isLegalMove(i, n):
+            for i in range(0, len(possibleInputs)):
+                for n in range(0, len(possibleInputs[0])):
+                    if playerMove == possibleInputs[i][n]:
+                        if isRealInput(playerMove):
+                            if board.isLegalMove(i, n):
+                                moveMade = True
+                                board.setBoardValues(player.getShape(), i, n)
+
+        else:
+            print(player.getName() + ", it's your turn!")
+            board.drawBoard()
+            movingShape = input("Which shape do you want to move? ")
+            movingLocation = input("Where do you want to move the shape? ")
+
+            # Check if inputs are valid
+            if isRealInput(movingShape) and isRealInput(movingLocation):
+                shapeIndex = getInputIndex(movingShape)
+                locationIndex = getInputIndex(movingLocation)
+                # Check if moving shape is the same as the players shape
+                if board.getBoardValues()[shapeIndex[0]][shapeIndex[1]] == player.getShape():
+                    # Check if location is empty
+                    if board.getBoardValues()[locationIndex[0]][locationIndex[1]] == " ":
+                        if board.checkIfNextToTile(shapeIndex, locationIndex):
+                            board.setBoardValues(" ", shapeIndex[0], shapeIndex[1])
+                            board.setBoardValues(player.getShape(), locationIndex[0], locationIndex[1])
                             moveMade = True
-                            board.setBoardValues(player.getShape(), i, n)
-
-    else:
-        print(player.getName() + ", it's your turn!")
-        board.drawBoard()
-        movingShape = input("Which shape do you want to move? ")
-        movingLocation = input("Where do you want to move the shape? ")
-
-        # Check if inputs are valid
-        if isRealInput(movingShape) and isRealInput(movingLocation):
-            shapeIndex = getInputIndex(movingShape)
-            locationIndex = getInputIndex(movingLocation)
-            # Check if moving shape is the same as the players shape
-            if board.getBoardValues()[shapeIndex[0]][shapeIndex[1]] == player.getShape():
-                # Check if location is empty
-                if board.getBoardValues()[locationIndex[0]][locationIndex[1]] == " ":
-                    if board.checkIfNextToTile(shapeIndex, locationIndex):
-                        board.setBoardValues(" ", shapeIndex[0], shapeIndex[1])
-                        board.setBoardValues(player.getShape(), locationIndex[0], locationIndex[1])
-                        moveMade = True
 
 
 
 
-    if board.hasWon(player.getShape()):
-        gameIsPlaying = False
+        if board.hasWon(player.getShape()):
+            gameIsPlaying = False
 
-    if moveMade:
-        giveTurnToNextPlayer()
-        turnCounter += 1
-    else:
-        print("The move that has been made was not legal, try again")
+        if moveMade:
+            giveTurnToNextPlayer()
+            turnCounter += 1
+        else:
+            print("The move that has been made was not legal, try again")
 
-board.drawBoard()
-print("weiner")
+    board.drawBoard()
+    print(f"Congratulation to {currentPlayer().getName()} for winning the game! Type \"restart\" to restart!")
+    restartInput = input()
