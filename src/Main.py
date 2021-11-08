@@ -69,12 +69,6 @@ def getInputIndex(input):
 
 
 
-def resetGame(playingLoop):
-    board.resetBoard()
-    playingLoop = True
-
-
-
 while gameLoop:
 
     print("Welcome to Italian Tic-Tac-Toe")
@@ -143,12 +137,13 @@ while gameLoop:
 
 
 
-        if board.hasWon(player.getShape()):
-            gameIsPlaying = False
 
         if moveMade:
-            giveTurnToNextPlayer()
-            turnCounter += 1
+            if board.hasWon(player.getShape()):
+                gameIsPlaying = False
+            else:
+                giveTurnToNextPlayer()
+                turnCounter += 1
         else:
             print("The move that has been made was not legal, try again")
 
@@ -157,7 +152,9 @@ while gameLoop:
     print("Type anything else to exit the program")
     restartInput = input()
     if restartInput == "restart":
-        resetGame(gameIsPlaying)
+        board.resetBoard()
+        gameIsPlaying = True
+        turnCounter = 0
     else:
         gameLoop = False
 
