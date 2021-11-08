@@ -16,22 +16,6 @@ possibleInputs = [["a1", "a2", "a3"],
 turnsBeforeSliding = 6
 turnCounter = 0
 
-print("Welcome to Italian Tic-Tac-Toe")
-
-name1 = input("Player 1 fill in your name: ")
-shape1 = "X"
-player1 = Player(name1, shape1)
-
-name2 = input("Player 2 fill in your name: ")
-shape2 = "O"
-player2 = Player(name2, shape2)
-
-players = [player1, player2]
-
-print(f"Hello {players[0].getName()} and {players[1].getName()}")
-
-board = Board()
-
 gameIsPlaying = True
 gameLoop = True
 
@@ -83,9 +67,35 @@ def getInputIndex(input):
     # This should never happen, but is here for safety
     return [0, 0]
 
-randomizeTurnOrder()
+
+
+def resetGame(playingLoop):
+    board.resetBoard()
+    playingLoop = True
+
+
 
 while gameLoop:
+
+    print("Welcome to Italian Tic-Tac-Toe")
+
+    name1 = input("Player 1 fill in your name: ")
+    shape1 = "X"
+    player1 = Player(name1, shape1)
+
+    name2 = input("Player 2 fill in your name: ")
+    shape2 = "O"
+    player2 = Player(name2, shape2)
+
+    players = [player1, player2]
+
+    print(f"Hello {players[0].getName()} and {players[1].getName()}")
+
+    board = Board()
+
+
+    randomizeTurnOrder()
+
     while gameIsPlaying:
         # Turns to true when a valid move has been made
         moveMade = False
@@ -144,4 +154,11 @@ while gameLoop:
 
     board.drawBoard()
     print(f"Congratulation to {currentPlayer().getName()} for winning the game! Type \"restart\" to restart!")
+    print("Type anything else to exit the program")
     restartInput = input()
+    if restartInput == "restart":
+        resetGame(gameIsPlaying)
+    else:
+        gameLoop = False
+
+

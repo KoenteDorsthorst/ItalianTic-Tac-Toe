@@ -26,19 +26,23 @@ class Board:
     def hasWon(self, shape):
         for x in range(0, self.boardWidth):
             for y in range(0, self.boardHeight - 2):
-                if self.boardValues[y][x] == shape and self.boardValues[y+1][x] == shape and self.boardValues[y+2][x] == shape:
+                if self.boardValues[y][x] == shape and self.boardValues[y + 1][x] == shape and \
+                        self.boardValues[y + 2][x] == shape:
                     return True
 
         for y in range(0, self.boardHeight):
             for x in range(0, self.boardWidth - 2):
-                if self.boardValues[y][x] == shape and self.boardValues[y][x+1] == shape and self.boardValues[y][x+2] == shape:
+                if self.boardValues[y][x] == shape and self.boardValues[y][x + 1] == shape and \
+                        self.boardValues[y][x + 2] == shape:
                     return True
 
         for x in range(0, self.boardWidth - 2):
             for y in range(0, self.boardHeight - 2):
-                if self.boardValues[x][y] == shape and self.boardValues[x+1][y+1] == shape and self.boardValues[x+2][y+2] == shape:
+                if self.boardValues[x][y] == shape and self.boardValues[x + 1][y + 1] == shape and \
+                        self.boardValues[x + 2][y + 2] == shape:
                     return True
-                if self.boardValues[x][y+2] == shape and self.boardValues[x+1][y+1] == shape and self.boardValues[x+2][y] == shape:
+                if self.boardValues[x][y + 2] == shape and self.boardValues[x + 1][y + 1] == shape and \
+                        self.boardValues[x + 2][y] == shape:
                     return True
 
         return False
@@ -54,4 +58,7 @@ class Board:
             return True
         return False
 
-        pass
+    def resetBoard(self):
+        for x in range(0, self.boardWidth):
+            for y in range(0, self.boardHeight):
+                self.boardValues[y][x] = " "
