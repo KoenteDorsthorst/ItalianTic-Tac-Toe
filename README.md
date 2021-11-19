@@ -26,17 +26,29 @@ Do not only think of your own moves when sliding, keep in mind that the opponent
 
 ## Program
 
+### How to play
+
+To play your shape, refer to this example of the board:
+
+ a1 | a2 | a3
+----|----|----
+ b1 | b2 | b3
+ c1 | c2 | c3
+
+
+for example, if its your turn and you want to play your shape in the middle tile, simply input b2 in the command prompt
+
 
 ### What will I be making
 
 In this project I will be making a console based version of Italian tic-tac-toe. This program will be writen in python. This version of Italian tic-tac-toe will have multiple features listed below:
 
-- A welcoming message when starting the application
-- A prompt for the names of both players
-- Both gameplay phases (placing shapes and sliding shapes)
-- Error handling when users use invalid or rule-breaking moves
-- An endscreen where the winner will be displayed
-- A way to play another round after one has finished
+- A welcoming message when starting the application (DONE)
+- A prompt for the names of both players (DONE)
+- Both gameplay phases (placing shapes and sliding shapes) (DONE)
+- Error handling when users use invalid or rule-breaking moves (DONE)
+- An endscreen where the winner will be displayed (DONE)
+- A way to play another round after one has finished (DONE)
 
 ### Possible features
 
