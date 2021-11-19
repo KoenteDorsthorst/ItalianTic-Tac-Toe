@@ -1,7 +1,7 @@
 from random import randint
 
-from src.Board import Board
-from src.Player import Player
+from Board import Board
+from Player import Player
 
 # TODO Make minimum and maximum name length requirement
 
