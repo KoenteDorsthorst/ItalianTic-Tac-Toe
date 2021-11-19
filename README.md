@@ -35,6 +35,7 @@ To play your shape, refer to this example of the board:
  b1 | b2 | b3
 ----|----|----
  c1 | c2 | c3
+----|----|----
 
 for example, if its your turn and you want to play your shape in the middle tile, simply input b2 in the command prompt
 
