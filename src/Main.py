@@ -1,3 +1,5 @@
+import sys
+
 from random import randint
 
 from Board import Board
@@ -11,6 +13,8 @@ possibleInputs = [["a1", "a2", "a3"],
                     ["b1", "b2", "b3"],
                     ["c1", "c2", "c3"]]
 
+print("Control the game by using the following inputs:")
+print(sum(possibleInputs, []))
 
 # How many turns each player has to do before the
 turnsBeforeSliding = 6
@@ -68,16 +72,25 @@ def getInputIndex(input):
     return [0, 0]
 
 
+def get_input_with_interrupt(input_msg=None):
+    try:
+        if input_msg is not None:
+            return input(input_msg)
+        else:
+            return input()
+    except (EOFError, KeyboardInterrupt):
+        sys.exit(0)
+
 
 while gameLoop:
 
     print("Welcome to Italian Tic-Tac-Toe")
 
-    name1 = input("Player 1 fill in your name: ")
+    name1 = get_input_with_interrupt("Player 1 fill in your name: ")
     shape1 = "X"
     player1 = Player(name1, shape1)
 
-    name2 = input("Player 2 fill in your name: ")
+    name2 = get_input_with_interrupt("Player 2 fill in your name: ")
     shape2 = "O"
     player2 = Player(name2, shape2)
 
@@ -101,9 +114,7 @@ while gameLoop:
             print(player.getName() + ", it's your turn!")
 
             board.drawBoard()
-            playerMove = input()
-
-
+            playerMove = get_input_with_interrupt()
 
             # Places a shape on the location the user specified (if its available)
 
@@ -118,8 +129,8 @@ while gameLoop:
         else:
             print(player.getName() + ", it's your turn!")
             board.drawBoard()
-            movingShape = input("Which shape do you want to move? ")
-            movingLocation = input("Where do you want to move the shape? ")
+            movingShape = get_input_with_interrupt("Which shape do you want to move? ")
+            movingLocation = get_input_with_interrupt("Where do you want to move the shape? ")
 
             # Check if inputs are valid
             if isRealInput(movingShape) and isRealInput(movingLocation):
@@ -134,10 +145,6 @@ while gameLoop:
                             board.setBoardValues(player.getShape(), locationIndex[0], locationIndex[1])
                             moveMade = True
 
-
-
-
-
         if moveMade:
             if board.hasWon(player.getShape()):
                 gameIsPlaying = False
@@ -150,7 +157,7 @@ while gameLoop:
     board.drawBoard()
     print(f"Congratulation to {currentPlayer().getName()} for winning the game! Type \"restart\" to restart!")
     print("Type anything else to exit the program")
-    restartInput = input()
+    restartInput = get_input_with_interrupt()
     if restartInput == "restart":
         board.resetBoard()
         gameIsPlaying = True
