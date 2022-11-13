@@ -6,6 +6,7 @@ class Player:
         self.shape = shape
 
     def playShape(self):
+        print("hoi")
 
     def getName(self):
         return self.name
