@@ -5,10 +5,7 @@ class Player:
         self.name = name
         self.shape = shape
 
-    # Make slap button for JJ
-
     def playShape(self):
-        print("hoi")
 
     def getName(self):
         return self.name
